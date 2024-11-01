@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tailwind POS</title>
+    <link
+      href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <script src="https://unpkg.com/idb/build/iife/index-min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.8.2/dist/alpine.min.js"></script>
+  </head>
+  <body class="bg-blue-gray-50" x-data="initApp()" x-init="initDatabase()">
+    <!-- noprint-area -->
+    <div
+      class="hide-print flex flex-row h-screen antialiased text-blue-gray-800"
+    >
+      <!-- left sidebar -->
+      <div class="flex flex-row w-96 h-screen overflow-y-auto">
+        <div
+          class="flex flex-col items-center py-6 w-96 bg-white rounded-2xl shadow-lg"
+        >
+          <div class="relative w-auto px-10 pl-1">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">
+              Malumotlar
+            </h1>
+            <div class="flex space-x-4 mb-6">
+              <button
+                id="foodButton"
+                class="w-1/2 p-3 rounded-xl border border-gray-200 focus:outline-none bg-blue-50 transition-all duration-200 shadow-sm hover:shadow-md active"
+              >
+                <span class="inline-flex items-center justify-center">
+                  <span class="font-semibold text-black">Ovqatlar</span>
+                </span>
+              </button>
+              <button
+                id="categoryButton"
+                class="w-1/2 p-3 rounded-xl border border-gray-200 focus:outline-none bg-white transition-all duration-200 shadow-sm hover:shadow-md"
+              >
+                <span class="inline-flex items-center justify-center">
+                  <span class="font-semibold text-black">Xizmatlar</span>
+                </span>
+              </button>
+            </div>
+            <div
+              id="foodList"
+              class="absolute w-full rounded-xl transform transition-all duration-200 z-10 overflow-y-auto"
+            >
+              <div
+                class="p-3 hover:bg-blue-50 cursor-pointer flex items-center border-gray-100"
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3"
+                  class="w-12 h-12 mr-3 rounded-lg shadow-sm"
+                  alt="CheeseBurger"
+                />
+                <div>
+                  <p class="font-semibold text-gray-800">CheeseBurger</p>
+                  <p class="text-sm text-gray-500">
+                    Classic beef burger with cheese
+                  </p>
+                </div>
+              </div>
+              <div
+                class="p-3 hover:bg-blue-50 cursor-pointer flex items-center"
+              >
+                <img
+                  src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3"
+                  class="w-12 h-12 mr-3 rounded-lg shadow-sm"
+                  alt="Club Sandwich"
+                />
+                <div>
+                  <p class="font-semibold text-gray-800">Club Sandwich</p>
+                  <p class="text-sm text-gray-500">
+                    Triple-decker sandwich with chicken
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div
+              id="categoryList"
+              class="absolute w-full rounded-xl shadow-xl hidden transform transition-all duration-200 z-10 max-h-[calc(100vh-300px)] overflow-y-auto"
+            >
+              <div
+                class="p-3 hover:bg-blue-50 cursor-pointer flex items-center"
+              >
+                <div
+                  class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center mr-3"
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixlib=rb-4.0.3"
+                    class="w-12 h-12 mr-3 rounded-lg shadow-sm"
+                    alt="Services"
+                  />
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-800">Fast Food</p>
+                  <p class="text-sm text-gray-500">
+                    Burgers, Pizza, Sandwiches
+                  </p>
+                </div>
+              </div>
+              <div
+                class="p-3 hover:bg-blue-50 cursor-pointer flex items-center"
+              >
+                <div
+                  class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-3"
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?ixlib=rb-4.0.3"
+                    class="w-12 h-12 mr-3 rounded-lg shadow-sm"
+                    alt="CheeseBurger"
+                  />
+                </div>
+                <div>
+                  <p class="font-semibold text-gray-800">Beverages</p>
+                  <p class="text-sm text-gray-500">Soft Drinks, Coffee, Tea</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- page content -->
+      <div class="flex-grow flex overflow-y-auto">
+        <!-- store menu -->
+        <div
+          class="flex flex-col bg-blue-gray-50 h-[800px] w-full py-4 overflow-y-auto"
+        >
+          <div class="flex px-2 flex-row relative">
+            <div
+              class="absolute left-5 top-3 px-2 py-2 rounded-full bg-cyan-500 text-white"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                />
+              </svg>
+            </div>
+            <input
+              type="text"
+              class="bg-white rounded-3xl shadow text-lg full w-full h-16 py-4 pl-16 transition-shadow focus:shadow-2xl focus:outline-none"
+              placeholder="Cari menu ..."
+              x-model="keyword"
+            />
+          </div>
+          <div class="overflow-y mt-4">
+            <div class="h-full overflow-y-auto px-2">
+              <div
+                class="select-none bg-blue-gray-100 rounded-3xl flex flex-wrap content-center justify-center h-full"
+                x-show="products.length === 0"
+              >
+                <div id="cartItemDialog" class="hidden">
+                  <div
+                    class="fixed inset-0 bg-black bg-opacity-75 backdrop-blur-sm transition-all z-50"
+                  >
+                    <div
+                      class="fixed flex items-center justify-center inset-0 z-50"
+                    >
+                      <div
+                        class="w-96 rounded-lg border bg-white shadow-lg duration-200"
+                      >
+                        <!-- Rest of dialog content -->
+                        <div class="flex flex-col space-y-1.5 p-6">
+                          <img
+                            id="dialogImage"
+                            class="w-full h-48 object-cover rounded-lg mb-3"
+                          />
+                          <h3
+                            id="dialogTitle"
+                            class="text-2xl font-semibold leading-none tracking-tight"
+                          ></h3>
+                          <p id="dialogPrice" class="text-sm text-gray-500">
+                            Screenpad
+                          </p>
+                        </div>
+                        <div class="p-6 pt-0">
+                          <div class="flex justify-end space-x-2">
+                            <button
+                              id="closeCartDialog"
+                              class="inline-flex items-center justify-center rounded-md text-sm font-medium bg-blue-500 text-white hover:bg-blue-600 h-10 px-4 py-2"
+                            >
+                              Yopish
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  id="foodContent"
+                  class="grid grid-cols-5 gap-4 p-4 overflow-auto overflow-y-auto"
+                >
+                  <div class="bg-white rounded-lg shadow p-4">
+                    <img
+                      src="img/beef-burger.png"
+                      class="w-full h-48 object-cover rounded-lg mb-3"
+                    />
+                    <h3 class="font-semibold">Osh</h3>
+                    <p class="text-gray-600">35,000 so'm</p>
+                  </div>
+                  <div class="bg-white rounded-lg shadow p-4">
+                    <img
+                      src="img/beef-burger.png"
+                      class="w-full h-48 object-cover rounded-lg mb-3"
+                    />
+                    <h3 class="font-semibold">Osh</h3>
+                    <p class="text-gray-600">35,000 so'm</p>
+                  </div>
+                  <div class="bg-white rounded-lg shadow p-4">
+                    <img
+                      src="img/beef-burger.png"
+                      class="w-full h-48 object-cover rounded-lg mb-3"
+                    />
+                    <h3 class="font-semibold">Osh</h3>
+                    <p class="text-gray-600">35,000 so'm</p>
+                  </div>
+                  <div class="bg-white rounded-lg shadow p-4">
+                    <img
+                      src="img/beef-burger.png"
+                      class="w-full h-48 object-cover rounded-lg mb-3"
+                    />
+                    <h3 class="font-semibold">Osh</h3>
+                    <p class="text-gray-600">35,000 so'm</p>
+                  </div>
+                  <div class="bg-white rounded-lg shadow p-4">
+                    <img
+                      src="img/beef-burger.png"
+                      class="w-full h-48 object-cover rounded-lg mb-3"
+                    />
+                    <h3 class="font-semibold">Osh</h3>
+                    <p class="text-gray-600">35,000 so'm</p>
+                  </div>
+                </div>
+                <div
+                  id="servicesContent"
+                  class="grid grid-cols-5 gap-4 p-4 hidden overflow-y-auto overflow-auto"
+                >
+                  <div class="bg-white rounded-lg shadow p-4">
+                    <img
+                      src="img/matcha-latte.png"
+                      class="w-full h-48 object-cover rounded-lg mb-3"
+                    />
+                    <h3 class="font-semibold">Latte</h3>
+                    <p class="text-gray-600">150,000 so'm</p>
+                  </div>
+                  <div class="bg-white rounded-lg shadow p-4">
+                    <img
+                      src="img/matcha-latte.png"
+                      class="w-full h-48 object-cover rounded-lg mb-3"
+                    />  
+                    <h3 class="font-semibold">Massaj</h3>
+                    <p class="text-gray-600">150,000 so'm</p>
+                  </div>
+                  <div class="bg-white rounded-lg shadow p-4">
+                    <img
+                      src="img/matcha-latte.png"
+                      class="w-full h-48 object-cover rounded-lg mb-3"
+                    />
+                    <h3 class="font-semibold">Massaj</h3>
+                    <p class="text-gray-600">150,000 so'm</p>
+                  </div>
+                  <div class="bg-white rounded-lg shadow p-4">
+                    <img
+                      src="img/matcha-latte.png"
+                      class="w-full h-48 object-cover rounded-lg mb-3"
+                    />
+                    <h3 class="font-semibold">Massaj</h3>
+                    <p class="text-gray-600">150,000 so'm</p>
+                  </div>
+                  <div class="bg-white rounded-lg shadow p-4">
+                    <img
+                      src="img/matcha-latte.png"
+                      class="w-full h-48 object-cover rounded-lg mb-3"
+                    />
+                    <h3 class="font-semibold">Massaj</h3>
+                    <p class="text-gray-600">150,000 so'm</p>
+                  </div>
+
+                  <!-- Add more service items -->
+                </div>
+              </div>
+              <div
+                x-show="filteredProducts().length"
+                class="grid grid-cols-4 gap-4 pb-3"
+              >
+                <template
+                  x-for="product in filteredProducts()"
+                  :key="product.id"
+                >
+                  <div
+                    role="button"
+                    class="select-none cursor-pointer transition-shadow overflow-hidden rounded-2xl bg-white shadow hover:shadow-lg"
+                    :title="product.name"
+                    x-on:click="addToCart(product)"
+                  >
+                    <img :src="product.image" :alt="product.name" />
+                    <div class="flex pb-3 px-3 text-sm -mt-3">
+                      <p
+                        class="flex-grow truncate mr-1"
+                        x-text="product.name"
+                      ></p>
+                      <p
+                        class="nowrap font-semibold"
+                        x-text="priceFormat(product.price)"
+                      ></p>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end of store menu -->
+
+        <!-- right sidebar -->
+        <div
+          class="w-5/12 flex flex-col bg-blue-gray-50 h-full bg-white pr-4 pl-2 py-4"
+        >
+          <div class="bg-white rounded-3xl flex flex-col h-full shadow">
+            <!-- empty cart -->
+            <div
+              x-show="cart.length === 0"
+              class="flex-1 w-full p-4 opacity-25 select-none flex flex-col flex-wrap content-center justify-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-16 inline-block"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                />
+              </svg>
+              <p>CART EMPTY</p>
+            </div>
+
+            <!-- cart items -->
+            <div
+              x-show="cart.length > 0"
+              class="flex-1 flex flex-col overflow-auto"
+            >
+              <div class="h-16 text-center flex justify-center">
+                <div class="pl-8 text-left text-lg py-4 relative">
+                  <!-- cart icon -->
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="h-6 inline-block"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
+                    />
+                  </svg>
+                  <div
+                    x-show="getItemsCount() > 0"
+                    class="text-center absolute bg-cyan-500 text-white w-5 h-5 text-xs p-0 leading-5 rounded-full -right-2 top-3"
+                    x-text="getItemsCount()"
+                  ></div>
+                </div>
+                <div class="flex-grow px-8 text-right text-lg py-4 relative">
+                  <!-- trash button -->
+                  <button
+                    x-on:click="clear()"
+                    class="text-blue-gray-300 hover:text-pink-500 focus:outline-none"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="h-6 w-6 inline-block"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+
+              <div class="flex-1 w-full px-4 overflow-auto">
+                <template x-for="item in cart" :key="item.productId">
+                  <div
+                    class="select-none mb-3 bg-blue-gray-50 rounded-lg w-full text-blue-gray-700 py-2 px-2 flex justify-center"
+                  >
+                    <img
+                      :src="item.image"
+                      alt=""
+                      class="rounded-lg h-10 w-10 bg-white shadow mr-2"
+                    />
+                    <div class="flex-grow">
+                      <h5 class="text-sm" x-text="item.name"></h5>
+                      <p
+                        class="text-xs block"
+                        x-text="priceFormat(item.price)"
+                      ></p>
+                    </div>
+                    <div class="py-1">
+                      <div class="w-28 grid grid-cols-3 gap-2 ml-2">
+                        <button
+                          x-on:click="addQty(item, -1)"
+                          class="rounded-lg text-center py-1 text-white bg-blue-gray-600 hover:bg-blue-gray-700 focus:outline-none"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-6 w-3 inline-block"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M20 12H4"
+                            />
+                          </svg>
+                        </button>
+                        <input
+                          x-model.number="item.qty"
+                          type="text"
+                          class="bg-white rounded-lg text-center shadow focus:outline-none focus:shadow-lg text-sm"
+                        />
+                        <button
+                          x-on:click="addQty(item, 1)"
+                          class="rounded-lg text-center py-1 text-white bg-blue-gray-600 hover:bg-blue-gray-700 focus:outline-none"
+                        >
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="h-6 w-3 inline-block"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                          >
+                            <path
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+              </div>
+            </div>
+            <!-- end of cart items -->
+
+            <!-- payment info -->
+            <div class="select-none h-auto w-full text-center pt-3 pb-4 px-4">
+              <div class="flex mb-3 text-lg font-semibold text-blue-gray-700">
+                <div>TOTAL</div>
+                <div
+                  class="text-right w-full"
+                  x-text="priceFormat(getTotalPrice())"
+                ></div>
+              </div>
+
+              <div
+                x-show="change > 0"
+                class="flex mb-3 text-lg font-semibold bg-cyan-50 text-blue-gray-700 rounded-lg py-2 px-3"
+              >
+                <div class="text-cyan-800">CHANGE</div>
+                <div
+                  class="text-right flex-grow text-cyan-600"
+                  x-text="priceFormat(change)"
+                ></div>
+              </div>
+              <div
+                x-show="change < 0"
+                class="flex mb-3 text-lg font-semibold bg-pink-100 text-blue-gray-700 rounded-lg py-2 px-3"
+              >
+                <div
+                  class="text-right flex-grow text-pink-600"
+                  x-text="priceFormat(change)"
+                ></div>
+              </div>
+
+              <div class="flex justify-center gap-1">
+                <button
+                  class="text-white bg-red-500 rounded-2xl text-lg w-full px-6 py-1 focus:outline-none"
+                >
+                  Check
+                </button>
+                <button
+                  class="text-white rounded-2xl text-lg w-full px-6 bg-yellow-500"
+                >
+                  Remove
+                </button>
+
+                <button
+                  id="submitButton"
+                  class="text-white bg-blue-500 rounded-2xl text-lg w-full px-6 py-1 focus:outline-none"
+                >
+                  SUBMIT
+                </button>
+                <div
+                  id="customDialog"
+                  class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden"
+                >
+                  <div class="bg-white rounded-2xl shadow-lg p-6 w-96 relative">
+                    <button
+                      id="closeDialog"
+                      class="text-white bg-red-500 rounded-2xl px-4 py-2 absolute top-2 right-2"
+                    >
+                      x
+                    </button>
+                    <h2 class="text-2xl font-bold mb-4">Custom Dialog</h2>
+                    <p class="mb-6">DJIDJWIDJWIJDWI</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- end of payment info -->
+          </div>
+        </div>
+        <!-- end of right sidebar -->
+      </div>
+    </div>
+    <script>
+      const foodButton = document.getElementById("foodButton");
+      const categoryButton = document.getElementById("categoryButton");
+      const foodList = document.getElementById("foodList");
+      const categoryList = document.getElementById("categoryList");
+      const foodContent = document.getElementById("foodContent");
+      const servicesContent = document.getElementById("servicesContent");
+
+      foodButton.addEventListener("click", function () {
+        // Sidebar changes
+        foodList.classList.remove("hidden");
+        categoryList.classList.add("hidden");
+        foodButton.classList.add("bg-blue-500");
+        categoryButton.classList.remove("bg-blue-500");
+        categoryButton.classList.add("bg-transparent");
+
+        // Content changes
+        foodContent.classList.remove("hidden");
+        servicesContent.classList.add("hidden");
+      });
+
+      categoryButton.addEventListener("click", function () {
+        // Sidebar changes
+        categoryList.classList.remove("hidden");
+        foodList.classList.add("hidden");
+        categoryButton.classList.add("bg-blue-500");
+        foodButton.classList.remove("bg-blue-500");
+        foodButton.classList.add("bg-transparent");
+
+        // Content changes
+        servicesContent.classList.remove("hidden");
+        foodContent.classList.add("hidden");
+      });
+
+      foodList.classList.remove("hidden");
+      foodContent.classList.remove("hidden");
+      foodButton.classList.add("bg-blue-500");
+
+      //dialog
+      const submitButton = document.getElementById("submitButton");
+      const customDialog = document.getElementById("customDialog");
+      const closeDialog = document.getElementById("closeDialog");
+
+      // Open the dialog
+      submitButton.addEventListener("click", () => {
+        customDialog.classList.remove("hidden");
+      });
+
+      // Close the dialog
+      closeDialog.addEventListener("click", () => {
+        customDialog.classList.add("hidden");
+      });
+
+      document.addEventListener("click", (event) => {
+        const dropdownButton = document.getElementById("dropdownButton");
+        const dropdownMenu = document.getElementById("dropdownMenu");
+        if (!dropdownButton.contains(event.target)) {
+          dropdownMenu.classList.add("hidden");
+        }
+      });
+
+      // Add click handlers for cart items
+      document.addEventListener("click", (e) => {
+        // Only open dialog when clicking name, price or image
+        if (e.target.matches(".text-sm, img, h5")) {
+          const cartItem = e.target.closest(".select-none.mb-3");
+          if (cartItem) {
+            const dialog = document.getElementById("cartItemDialog");
+            const img = cartItem.querySelector("img").src;
+            const title = cartItem.querySelector("h5").textContent;
+            const price = cartItem.querySelector("p").textContent;
+
+            document.getElementById("dialogImage").src = img;
+            document.getElementById("dialogTitle").textContent = title;
+            document.getElementById("dialogPrice").textContent = price;
+
+            dialog.classList.remove("hidden");
+            document.body.style.overflow = "hidden";
+          }
+        }
+      });
+
+      document
+        .getElementById("closeCartDialog")
+        .addEventListener("click", () => {
+          document.getElementById("cartItemDialog").classList.add("hidden");
+          document.body.style.overflow = "auto";
+        });
+      async function loadDatabase() {
+        const db = await idb.openDB("tailwind_store", 1, {
+          upgrade(db, oldVersion, newVersion, transaction) {
+            db.createObjectStore("products", {
+              keyPath: "id",
+              autoIncrement: true,
+            });
+            db.createObjectStore("sales", {
+              keyPath: "id",
+              autoIncrement: true,
+            });
+          },
+        });
+
+        return {
+          db,
+          getProducts: async () => await db.getAll("products"),
+          addProduct: async (product) => await db.add("products", product),
+          editProduct: async (product) =>
+            await db.put("products", product.id, product),
+          deleteProduct: async (product) =>
+            await db.delete("products", product.id),
+        };
+      }
+
+      function initApp() {
+        const app = {
+          db: null,
+          time: null,
+          firstTime: localStorage.getItem("first_time") === null,
+          activeMenu: "pos",
+          loadingSampleData: false,
+          moneys: [2000, 5000, 10000, 20000, 50000, 100000],
+          products: [],
+          keyword: "",
+          cart: [],
+          cash: 0,
+          change: 0,
+          isShowModalReceipt: false,
+          receiptNo: null,
+          receiptDate: null,
+          async initDatabase() {
+            this.db = await loadDatabase();
+            this.loadProducts();
+          },
+          async loadProducts() {
+            this.products = await this.db.getProducts();
+            console.log("products loaded", this.products);
+          },
+          async startWithSampleData() {
+            const response = await fetch("data/sample.json");
+            const data = await response.json();
+            this.products = data.products;
+            for (let product of data.products) {
+              await this.db.addProduct(product);
+            }
+
+            this.setFirstTime(false);
+          },
+          startBlank() {
+            this.setFirstTime(false);
+          },
+          setFirstTime(firstTime) {
+            this.firstTime = firstTime;
+            if (firstTime) {
+              localStorage.removeItem("first_time");
+            } else {
+              localStorage.setItem("first_time", new Date().getTime());
+            }
+          },
+          filteredProducts() {
+            const rg = this.keyword ? new RegExp(this.keyword, "gi") : null;
+            return this.products.filter((p) => !rg || p.name.match(rg));
+          },
+          addToCart(product) {
+            const index = this.findCartIndex(product);
+            if (index === -1) {
+              this.cart.push({
+                productId: product.id,
+                image: product.image,
+                name: product.name,
+                price: product.price,
+                option: product.option,
+                qty: 1,
+              });
+            } else {
+              this.cart[index].qty += 1;
+            }
+            this.beep();
+            this.updateChange();
+          },
+          findCartIndex(product) {
+            return this.cart.findIndex((p) => p.productId === product.id);
+          },
+          addQty(item, qty) {
+            const index = this.cart.findIndex(
+              (i) => i.productId === item.productId
+            );
+            if (index === -1) {
+              return;
+            }
+            const afterAdd = item.qty + qty;
+            if (afterAdd === 0) {
+              this.cart.splice(index, 1);
+              this.clearSound();
+            } else {
+              this.cart[index].qty = afterAdd;
+              this.beep();
+            }
+            this.updateChange();
+          },
+          addCash(amount) {
+            this.cash = (this.cash || 0) + amount;
+            this.updateChange();
+            this.beep();
+          },
+          getItemsCount() {
+            return this.cart.reduce((count, item) => count + item.qty, 0);
+          },
+          updateChange() {
+            this.change = this.cash - this.getTotalPrice();
+          },
+          updateCash(value) {
+            this.cash = parseFloat(value.replace(/[^0-9]+/g, ""));
+            this.updateChange();
+          },
+          getTotalPrice() {
+            return this.cart.reduce(
+              (total, item) => total + item.qty * item.price,
+              0
+            );
+          },
+          submitable() {
+            return this.change >= 0 && this.cart.length > 0;
+          },
+          submit() {
+            const time = new Date();
+            this.isShowModalReceipt = true;
+            this.receiptNo = `TWPOS-KS-${Math.round(time.getTime() / 1000)}`;
+            this.receiptDate = this.dateFormat(time);
+          },
+          closeModalReceipt() {
+            this.isShowModalReceipt = false;
+          },
+          dateFormat(date) {
+            const formatter = new Intl.DateTimeFormat("id", {
+              dateStyle: "short",
+              timeStyle: "short",
+            });
+            return formatter.format(date);
+          },
+          numberFormat(number) {
+            return (number || "")
+              .toString()
+              .replace(/^0|\./g, "")
+              .replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+          },
+          priceFormat(number) {
+            return number ? `Rp. ${this.numberFormat(number)}` : `Rp. 0`;
+          },
+          clear() {
+            this.cash = 0;
+            this.cart = [];
+            this.receiptNo = null;
+            this.receiptDate = null;
+            this.updateChange();
+            this.clearSound();
+          },
+          beep() {
+            this.playSound("sound/beep-29.mp3");
+          },
+          clearSound() {
+            this.playSound("sound/button-21.mp3");
+          },
+          playSound(src) {
+            const sound = new Audio();
+            sound.src = src;
+            sound.play();
+            sound.onended = () => delete sound;
+          },
+          printAndProceed() {
+            const receiptContent = document.getElementById("receipt-content");
+            const titleBefore = document.title;
+            const printArea = document.getElementById("print-area");
+
+            printArea.innerHTML = receiptContent.innerHTML;
+            document.title = this.receiptNo;
+
+            window.print();
+            this.isShowModalReceipt = false;
+
+            printArea.innerHTML = "";
+            document.title = titleBefore;
+
+            // TODO save sale data to database
+
+            this.clear();
+          },
+        };
+
+        return app;
+      }
+      // Add this to your existing JavaScript
+      const foodItems = document.querySelectorAll("#foodContent .bg-white");
+      const serviceItems = document.querySelectorAll(
+        "#servicesContent .bg-white"
+      );
+
+      function addToCart(element) {
+        const name = element.querySelector("h3").textContent;
+        const price = parseInt(
+          element.querySelector("p").textContent.replace(/[^0-9]/g, "")
+        );
+        const image = element.querySelector("img").src;
+
+        // Access Alpine.js data store
+        const app = document.querySelector("[x-data]").__x.$data;
+
+        app.addToCart({
+          id: Date.now(),
+          name: name,
+          price: price,
+          image: image,
+          qty: 1,
+        });
+      }
+
+      // Add click handlers
+      foodItems.forEach((item) => {
+        item.addEventListener("click", () => addToCart(item));
+      });
+
+      serviceItems.forEach((item) => {
+        item.addEventListener("click", () => addToCart(item));
+      });
+    </script>
+  </body>
+</html>
