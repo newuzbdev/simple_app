@@ -210,6 +210,11 @@
                               <li class="letter">8</li>
                               <li class="letter">9</li>
                               <li class="letter clearl">0</li>
+                              <li
+                                class="letter clearl flex items-center justify-center"
+                              >
+                                ,
+                              </li>
                               <li class="return">OK</li>
                             </ul>
                           </div>
@@ -251,7 +256,7 @@
                       src="img/beef-burger.png"
                       class="w-full h-32 object-cover rounded-lg"
                     />
-                    <h3 class="font-semibold">Osh</h3>
+                    <h3 class="font-semibold">Chees</h3>
                     <p class="text-gray-600">35,000 so'm</p>
                   </div>
                   <div class="bg-white rounded-lg shadow px-4">
@@ -259,7 +264,7 @@
                       src="img/beef-burger.png"
                       class="w-full h-32 object-cover rounded-lg"
                     />
-                    <h3 class="font-semibold">Chees</h3>
+                    <h3 class="font-semibold">Osh</h3>
                     <p class="text-gray-600">35,000 so'm</p>
                   </div>
                 </div>
@@ -441,25 +446,12 @@
                       ></p>
                     </div>
                     <div class="py-1">
-                      <div class="w-28 grid grid-cols-3 gap-2 ml-2">
+                      <div class="w-40 grid grid-cols-3 gap-2 ml-2">
                         <button
                           x-on:click="addQty(item, -1)"
                           class="rounded-lg text-center py-1 text-white bg-blue-gray-600 hover:bg-blue-gray-700 focus:outline-none"
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-6 w-3 inline-block"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M20 12H4"
-                            />
-                          </svg>
+                          -
                         </button>
                         <input
                           x-model.number="item.qty"
@@ -470,20 +462,7 @@
                           x-on:click="addQty(item, 1)"
                           class="rounded-lg text-center py-1 text-white bg-blue-gray-600 hover:bg-blue-gray-700 focus:outline-none"
                         >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            class="h-6 w-3 inline-block"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                            />
-                          </svg>
+                          +
                         </button>
                       </div>
                     </div>
@@ -853,28 +832,34 @@
 
       keyboard.addEventListener("click", (e) => {
         if (e.target.classList.contains("letter")) {
-          keyboardInput.value += e.target.textContent;
+          if (e.target.textContent === ",") {
+            if (!keyboardInput.value.includes(",")) {
+              keyboardInput.value += ",";
+            }
+          } else {
+            keyboardInput.value += e.target.textContent;
+          }
         }
 
         if (e.target.classList.contains("return")) {
           if (currentCartItem && keyboardInput.value) {
-            // Update cart quantity
             const app = document.querySelector("[x-data]").__x.$data;
             const cartItem = app.cart.find(
               (item) => item.productId === currentCartItem.productId
             );
             if (cartItem) {
-              cartItem.qty = parseInt(keyboardInput.value);
+              // Convert comma to dot for calculation
+              const qty = parseFloat(keyboardInput.value.replace(",", "."));
+              cartItem.qty = qty;
               app.updateChange();
             }
-
-            // Close dialog
             document.getElementById("cartItemDialog").classList.add("hidden");
             document.body.style.overflow = "auto";
             keyboardInput.value = "";
           }
         }
       });
+
       // Get all items from both food and services sections
       const allItems = {
         food: Array.from(
