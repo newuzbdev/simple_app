@@ -831,34 +831,32 @@
       let currentCartItem = null;
 
       keyboard.addEventListener("click", (e) => {
-        if (e.target.classList.contains("letter")) {
-          if (e.target.textContent === ",") {
-            if (!keyboardInput.value.includes(",")) {
-              keyboardInput.value += ",";
+    if (e.target.classList.contains("letter")) {
+        if (e.target.textContent === ',') {
+            if (!keyboardInput.value.includes(',')) {
+                keyboardInput.value = keyboardInput.value.replace(/\s+/g, '') + ',';
             }
-          } else {
-            keyboardInput.value += e.target.textContent;
-          }
+        } else {
+            keyboardInput.value = (keyboardInput.value + e.target.textContent).replace(/\s+/g, '');
         }
+    }
 
-        if (e.target.classList.contains("return")) {
-          if (currentCartItem && keyboardInput.value) {
+    if (e.target.classList.contains("return")) {
+        if (currentCartItem && keyboardInput.value) {
             const app = document.querySelector("[x-data]").__x.$data;
-            const cartItem = app.cart.find(
-              (item) => item.productId === currentCartItem.productId
-            );
+            const cartItem = app.cart.find(item => item.productId === currentCartItem.productId);
             if (cartItem) {
-              // Convert comma to dot for calculation
-              const qty = parseFloat(keyboardInput.value.replace(",", "."));
-              cartItem.qty = qty;
-              app.updateChange();
+                const qty = parseFloat(keyboardInput.value.replace(',', '.'));
+                cartItem.qty = qty;
+                app.updateChange();
             }
             document.getElementById("cartItemDialog").classList.add("hidden");
             document.body.style.overflow = "auto";
             keyboardInput.value = "";
-          }
         }
-      });
+    }
+});
+
 
       // Get all items from both food and services sections
       const allItems = {
