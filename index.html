@@ -28,10 +28,10 @@
             <h1 class="text-2xl font-bold text-gray-800 mb-6 text-center">
               Malumotlar
             </h1>
-            <div class="flex space-x-4 mb-6">
+            <div class="flex space-x-8 mb-6 px-4">
               <button
                 id="foodButton"
-                class="w-1/2 p-3 rounded-xl border border-gray-200 focus:outline-none bg-blue-50 transition-all duration-200 shadow-sm hover:shadow-md active"
+                class="w-1/2 px-6 py-2 rounded-xl border border-gray-200 focus:outline-none bg-blue-50 transition-all duration-200 shadow-sm hover:shadow-md active"
               >
                 <span class="inline-flex items-center justify-center">
                   <span class="font-semibold text-black">Ovqatlar</span>
@@ -39,7 +39,7 @@
               </button>
               <button
                 id="categoryButton"
-                class="w-1/2 p-3 rounded-xl border border-gray-200 focus:outline-none bg-white transition-all duration-200 shadow-sm hover:shadow-md"
+                class="w-1/2 px-6 py-2 rounded-xl border border-gray-200 focus:outline-none bg-white transition-all duration-200 shadow-sm hover:shadow-md"
               >
                 <span class="inline-flex items-center justify-center">
                   <span class="font-semibold text-black">Xizmatlar</span>
@@ -153,8 +153,8 @@
             </div>
             <input
               type="text"
-              class="bg-white rounded-3xl shadow text-lg full w-full h-16 py-4 pl-16 transition-shadow focus:shadow-2xl focus:outline-none"
-              placeholder="Cari menu ..."
+              class="bg-white rounded-3xl shadow text-lg full w-full h-16 pl-16 transition-shadow focus:shadow-2xl focus:outline-none"
+              placeholder="Search"
               x-model="keyword"
             />
           </div>
@@ -175,27 +175,43 @@
                         class="w-96 rounded-lg border bg-white shadow-lg duration-200"
                       >
                         <!-- Rest of dialog content -->
-                        <div class="flex flex-col space-y-1.5 p-6">
-                          <img
-                            id="dialogImage"
-                            class="w-full h-48 object-cover rounded-lg mb-3"
-                          />
-                          <h3
-                            id="dialogTitle"
-                            class="text-2xl font-semibold leading-none tracking-tight"
-                          ></h3>
-                          <p id="dialogPrice" class="text-sm text-gray-500">
-                            Screenpad
-                          </p>
-                        </div>
-                        <div class="p-6 pt-0">
-                          <div class="flex justify-end space-x-2">
-                            <button
-                              id="closeCartDialog"
-                              class="inline-flex items-center justify-center rounded-md text-sm font-medium bg-blue-500 text-white hover:bg-blue-600 h-10 px-4 py-2"
-                            >
-                              Yopish
-                            </button>
+                        <div class="flex flex-col space-y-3.5 px-2">
+                          <div id="container">
+                            <div class="flex justify-end">
+                              <button
+                                id="closeCartDialog"
+                                class="inline-flex items-center justify-center rounded-md text-sm font-medium bg-red-500 text-white hover:bg-blue-600 h-10 px-4 py-2"
+                              >
+                                x
+                              </button>
+                            </div>
+                            <h3
+                              id="dialogTitle"
+                              class="text-2xl font-semibold leading-none tracking-tight pb-2"
+                            ></h3>
+                            <p
+                              id="dialogPrice"
+                              class="text-sm text-gray-500 pb-3"
+                            ></p>
+                            <input
+                              type="text"
+                              id="keyboardInput"
+                              class="w-full border rounded p-2 mb-3"
+                              readonly
+                            />
+                            <ul id="keyboard">
+                              <li class="letter">1</li>
+                              <li class="letter">2</li>
+                              <li class="letter">3</li>
+                              <li class="letter clearl">4</li>
+                              <li class="letter">5</li>
+                              <li class="letter">6</li>
+                              <li class="letter clearl">7</li>
+                              <li class="letter">8</li>
+                              <li class="letter">9</li>
+                              <li class="letter clearl">0</li>
+                              <li class="return">OK</li>
+                            </ul>
                           </div>
                         </div>
                       </div>
@@ -206,44 +222,44 @@
                   id="foodContent"
                   class="grid grid-cols-5 gap-4 p-4 overflow-auto overflow-y-auto"
                 >
-                  <div class="bg-white rounded-lg shadow p-4">
+                  <div class="bg-white rounded-lg shadow px-4">
                     <img
                       src="img/beef-burger.png"
-                      class="w-full h-48 object-cover rounded-lg mb-3"
+                      class="w-full h-32 object-cover rounded-lg"
                     />
                     <h3 class="font-semibold">Osh</h3>
                     <p class="text-gray-600">35,000 so'm</p>
                   </div>
-                  <div class="bg-white rounded-lg shadow p-4">
+                  <div class="bg-white rounded-lg shadow px-4">
                     <img
                       src="img/beef-burger.png"
-                      class="w-full h-48 object-cover rounded-lg mb-3"
+                      class="w-full h-32 object-cover rounded-lg"
                     />
                     <h3 class="font-semibold">Osh</h3>
                     <p class="text-gray-600">35,000 so'm</p>
                   </div>
-                  <div class="bg-white rounded-lg shadow p-4">
+                  <div class="bg-white rounded-lg shadow px-4">
                     <img
                       src="img/beef-burger.png"
-                      class="w-full h-48 object-cover rounded-lg mb-3"
+                      class="w-full h-32 object-cover rounded-lg"
                     />
                     <h3 class="font-semibold">Osh</h3>
                     <p class="text-gray-600">35,000 so'm</p>
                   </div>
-                  <div class="bg-white rounded-lg shadow p-4">
+                  <div class="bg-white rounded-lg shadow px-4">
                     <img
                       src="img/beef-burger.png"
-                      class="w-full h-48 object-cover rounded-lg mb-3"
+                      class="w-full h-32 object-cover rounded-lg"
                     />
                     <h3 class="font-semibold">Osh</h3>
                     <p class="text-gray-600">35,000 so'm</p>
                   </div>
-                  <div class="bg-white rounded-lg shadow p-4">
+                  <div class="bg-white rounded-lg shadow px-4">
                     <img
                       src="img/beef-burger.png"
-                      class="w-full h-48 object-cover rounded-lg mb-3"
+                      class="w-full h-32 object-cover rounded-lg"
                     />
-                    <h3 class="font-semibold">Osh</h3>
+                    <h3 class="font-semibold">Chees</h3>
                     <p class="text-gray-600">35,000 so'm</p>
                   </div>
                 </div>
@@ -251,42 +267,42 @@
                   id="servicesContent"
                   class="grid grid-cols-5 gap-4 p-4 hidden overflow-y-auto overflow-auto"
                 >
-                  <div class="bg-white rounded-lg shadow p-4">
+                  <div class="bg-white rounded-lg shadow px-4">
                     <img
                       src="img/matcha-latte.png"
-                      class="w-full h-48 object-cover rounded-lg mb-3"
+                      class="w-full h-32 object-cover rounded-lg"
                     />
                     <h3 class="font-semibold">Latte</h3>
                     <p class="text-gray-600">150,000 so'm</p>
                   </div>
-                  <div class="bg-white rounded-lg shadow p-4">
+                  <div class="bg-white rounded-lg shadow px-4">
                     <img
                       src="img/matcha-latte.png"
-                      class="w-full h-48 object-cover rounded-lg mb-3"
-                    />  
-                    <h3 class="font-semibold">Massaj</h3>
-                    <p class="text-gray-600">150,000 so'm</p>
-                  </div>
-                  <div class="bg-white rounded-lg shadow p-4">
-                    <img
-                      src="img/matcha-latte.png"
-                      class="w-full h-48 object-cover rounded-lg mb-3"
+                      class="w-full h-32 object-cover rounded-lg"
                     />
                     <h3 class="font-semibold">Massaj</h3>
                     <p class="text-gray-600">150,000 so'm</p>
                   </div>
-                  <div class="bg-white rounded-lg shadow p-4">
+                  <div class="bg-white rounded-lg shadow px-4">
                     <img
                       src="img/matcha-latte.png"
-                      class="w-full h-48 object-cover rounded-lg mb-3"
+                      class="w-full h-32 object-cover rounded-lg"
                     />
                     <h3 class="font-semibold">Massaj</h3>
                     <p class="text-gray-600">150,000 so'm</p>
                   </div>
-                  <div class="bg-white rounded-lg shadow p-4">
+                  <div class="bg-white rounded-lg shadow px-4">
                     <img
                       src="img/matcha-latte.png"
-                      class="w-full h-48 object-cover rounded-lg mb-3"
+                      class="w-full h-32 object-cover rounded-lg"
+                    />
+                    <h3 class="font-semibold">Massaj</h3>
+                    <p class="text-gray-600">150,000 so'm</p>
+                  </div>
+                  <div class="bg-white rounded-lg shadow px-4">
+                    <img
+                      src="img/matcha-latte.png"
+                      class="w-full h-32 object-cover rounded-lg"
                     />
                     <h3 class="font-semibold">Massaj</h3>
                     <p class="text-gray-600">150,000 so'm</p>
@@ -509,7 +525,7 @@
 
               <div class="flex justify-center gap-1">
                 <button
-                  class="text-white bg-red-500 rounded-2xl text-lg w-full px-6 py-1 focus:outline-none"
+                  class="text-white bg-red-500 rounded-2xl text-lg w-full px-6 py-2 focus:outline-none"
                 >
                   Check
                 </button>
@@ -521,7 +537,7 @@
 
                 <button
                   id="submitButton"
-                  class="text-white bg-blue-500 rounded-2xl text-lg w-full px-6 py-1 focus:outline-none"
+                  class="text-white bg-cyan-500 rounded-2xl text-lg w-full px-6 py-1 focus:outline-none text-white"
                 >
                   SUBMIT
                 </button>
@@ -560,8 +576,8 @@
         // Sidebar changes
         foodList.classList.remove("hidden");
         categoryList.classList.add("hidden");
-        foodButton.classList.add("bg-blue-500");
-        categoryButton.classList.remove("bg-blue-500");
+        foodButton.classList.add("bg-cyan-500");
+        categoryButton.classList.remove("bg-cyan-500");
         categoryButton.classList.add("bg-transparent");
 
         // Content changes
@@ -573,8 +589,8 @@
         // Sidebar changes
         categoryList.classList.remove("hidden");
         foodList.classList.add("hidden");
-        categoryButton.classList.add("bg-blue-500");
-        foodButton.classList.remove("bg-blue-500");
+        categoryButton.classList.add("bg-cyan-500");
+        foodButton.classList.remove("bg-cyan-500");
         foodButton.classList.add("bg-transparent");
 
         // Content changes
@@ -584,7 +600,7 @@
 
       foodList.classList.remove("hidden");
       foodContent.classList.remove("hidden");
-      foodButton.classList.add("bg-blue-500");
+      foodButton.classList.add("bg-cyan-500");
 
       //dialog
       const submitButton = document.getElementById("submitButton");
@@ -601,14 +617,6 @@
         customDialog.classList.add("hidden");
       });
 
-      document.addEventListener("click", (event) => {
-        const dropdownButton = document.getElementById("dropdownButton");
-        const dropdownMenu = document.getElementById("dropdownMenu");
-        if (!dropdownButton.contains(event.target)) {
-          dropdownMenu.classList.add("hidden");
-        }
-      });
-
       // Add click handlers for cart items
       document.addEventListener("click", (e) => {
         // Only open dialog when clicking name, price or image
@@ -620,7 +628,7 @@
             const title = cartItem.querySelector("h5").textContent;
             const price = cartItem.querySelector("p").textContent;
 
-            document.getElementById("dialogImage").src = img;
+            // document.getElementById("dialogImage").src = img;
             document.getElementById("dialogTitle").textContent = title;
             document.getElementById("dialogPrice").textContent = price;
 
@@ -667,16 +675,13 @@
           time: null,
           firstTime: localStorage.getItem("first_time") === null,
           activeMenu: "pos",
-          loadingSampleData: false,
+
           moneys: [2000, 5000, 10000, 20000, 50000, 100000],
           products: [],
           keyword: "",
           cart: [],
           cash: 0,
           change: 0,
-          isShowModalReceipt: false,
-          receiptNo: null,
-          receiptDate: null,
           async initDatabase() {
             this.db = await loadDatabase();
             this.loadProducts();
@@ -685,19 +690,7 @@
             this.products = await this.db.getProducts();
             console.log("products loaded", this.products);
           },
-          async startWithSampleData() {
-            const response = await fetch("data/sample.json");
-            const data = await response.json();
-            this.products = data.products;
-            for (let product of data.products) {
-              await this.db.addProduct(product);
-            }
 
-            this.setFirstTime(false);
-          },
-          startBlank() {
-            this.setFirstTime(false);
-          },
           setFirstTime(firstTime) {
             this.firstTime = firstTime;
             if (firstTime) {
@@ -816,24 +809,6 @@
             sound.play();
             sound.onended = () => delete sound;
           },
-          printAndProceed() {
-            const receiptContent = document.getElementById("receipt-content");
-            const titleBefore = document.title;
-            const printArea = document.getElementById("print-area");
-
-            printArea.innerHTML = receiptContent.innerHTML;
-            document.title = this.receiptNo;
-
-            window.print();
-            this.isShowModalReceipt = false;
-
-            printArea.innerHTML = "";
-            document.title = titleBefore;
-
-            // TODO save sale data to database
-
-            this.clear();
-          },
         };
 
         return app;
@@ -870,6 +845,94 @@
 
       serviceItems.forEach((item) => {
         item.addEventListener("click", () => addToCart(item));
+      });
+      // Add this inside your existing script tag
+      const keyboard = document.getElementById("keyboard");
+      const keyboardInput = document.getElementById("keyboardInput");
+      let currentCartItem = null;
+
+      keyboard.addEventListener("click", (e) => {
+        if (e.target.classList.contains("letter")) {
+          keyboardInput.value += e.target.textContent;
+        }
+
+        if (e.target.classList.contains("return")) {
+          if (currentCartItem && keyboardInput.value) {
+            // Update cart quantity
+            const app = document.querySelector("[x-data]").__x.$data;
+            const cartItem = app.cart.find(
+              (item) => item.productId === currentCartItem.productId
+            );
+            if (cartItem) {
+              cartItem.qty = parseInt(keyboardInput.value);
+              app.updateChange();
+            }
+
+            // Close dialog
+            document.getElementById("cartItemDialog").classList.add("hidden");
+            document.body.style.overflow = "auto";
+            keyboardInput.value = "";
+          }
+        }
+      });
+      // Get all items from both food and services sections
+      const allItems = {
+        food: Array.from(
+          document.querySelectorAll("#foodContent .bg-white")
+        ).map((item) => ({
+          element: item,
+          name: item.querySelector("h3").textContent,
+          price: item.querySelector("p").textContent,
+        })),
+        services: Array.from(
+          document.querySelectorAll("#servicesContent .bg-white")
+        ).map((item) => ({
+          element: item,
+          name: item.querySelector("h3").textContent,
+          price: item.querySelector("p").textContent,
+        })),
+      };
+
+      // Add search functionality
+      const searchInput = document.querySelector('input[placeholder="Search"]');
+
+      searchInput.addEventListener("input", (e) => {
+        const searchTerm = e.target.value.toLowerCase();
+
+        // Search in both food and services
+        Object.values(allItems).forEach((category) => {
+          category.forEach((item) => {
+            const matches =
+              item.name.toLowerCase().includes(searchTerm) ||
+              item.price.toLowerCase().includes(searchTerm);
+
+            item.element.style.display = matches ? "block" : "none";
+          });
+        });
+      });
+
+      // Modify your existing cart item click handler
+      document.addEventListener("click", (e) => {
+        if (e.target.matches(".text-sm, img, h5")) {
+          const cartItem = e.target.closest(".select-none.mb-3");
+          if (cartItem) {
+            const dialog = document.getElementById("cartItemDialog");
+            const img = cartItem.querySelector("img").src;
+            const title = cartItem.querySelector("h5").textContent;
+            const price = cartItem.querySelector("p").textContent;
+
+            // Store current cart item reference
+            const app = document.querySelector("[x-data]").__x.$data;
+            currentCartItem = app.cart.find((item) => item.name === title);
+
+            document.getElementById("dialogTitle").textContent = title;
+            document.getElementById("dialogPrice").textContent = price;
+            keyboardInput.value = currentCartItem ? currentCartItem.qty : "";
+
+            dialog.classList.remove("hidden");
+            document.body.style.overflow = "hidden";
+          }
+        }
       });
     </script>
   </body>
